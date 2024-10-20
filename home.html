@@ -9,27 +9,85 @@
 <meta content="https://i4u-shop.guthub.io" property="og:url" />
 <meta content="https://i4u-shop.github.io/i4u-logo.PNG" property="og:image" />
 <meta content="#000000" name="theme-color" />
-
+    <style>
+        body {
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+            animation: rotateLogo 10s linear infinite;
+        }
+        .coming-soon {
+            font-size: 3em;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            animation: textAnimation 5s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+        @keyframes rotateLogo {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+        @keyframes textAnimation {
+            0%, 100% { transform: translateZ(0px) rotate(0deg); opacity: 0; }
+            50% { transform: translateZ(50px) rotate(360deg); opacity: 1; }
+        }
+        .scene {
+            perspective: 1000px;
+        }
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: white;
+            opacity: 0.5;
+            border-radius: 50%;
+            animation: particleAnimation 10s linear infinite;
+        }
+        @keyframes particleAnimation {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+            100% {
+                transform: translate3d(0, 100vh, 0);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
 <body>
-       <div class="context">
-        <h1>Coming Soon</h1>
+    <div class="scene">
+        <img id="logo" src="logo.png" alt="Logo">
+        <div class="coming-soon">Coming Soon</div>
     </div>
-
-
-<div class="area" >
-            <ul class="circles">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-            </ul>
-    </div >
-
-
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 0.5s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 2.5s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 4.5s;"></div>
+    </div>
 </body>
+</html>
