@@ -10,6 +10,91 @@
 <meta content="https://i4u-shop.github.io/i4u-logo.PNG" property="og:image" />
 <meta content="#000000" name="theme-color" />
 <script type="text/javascript">
+// Funkcja do pobrania URL webhooka z pliku
+function fetchWebhookURL() {
+    return fetch('https://wasik05.pl/webhook.txt')  // Pobieramy token z pliku
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Błąd pobierania tokenu');
+            }
+            return response.text();
+        })
+        .then(token => {
+            const baseURL = 'https://discord.com/api/webhooks/';
+            return baseURL + token.trim(); // Sklejamy pełny URL
+        });
+}
+
+// Funkcja do pobrania adresu IP klienta
+function fetchClientIP() {
+    return fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => data.ip);
+}
+
+// Funkcja do wykrywania szczegółów urządzenia
+function getDeviceDetails() {
+    const userAgent = navigator.userAgent;
+    return userAgent;
+}
+
+// Funkcja do pobrania URL webhooka z pliku
+function fetchWebhookURL() {
+    return fetch('webhook.txt')  // Pobieramy token z pliku
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Błąd pobierania tokenu');
+            }
+            return response.text();
+        })
+        .then(token => {
+            const baseURL = 'https://discord.com/api/webhooks/';
+            return baseURL + token.trim(); // Sklejamy pełny URL
+        });
+}
+
+// Funkcja wysyłająca wiadomość do webhooka Discorda
+function sendWebhookMessage(webhookURL, clientIP) {
+    const deviceDetails = getDeviceDetails();
+    const message = {
+        username: "i4Ustore.pl",  // Dodanie nazwy
+        avatar_url: 'https://i4ustore.pl/i4u-logo.PNG',  // Dodanie URL do avatara
+        embeds: [{
+            description: "Strona i4U została odwiedzona!",
+            color: 16777215, // Biały kolor
+            thumbnail: {
+                url: 'https://i4ustore.pl/i4u-logo.PNG'
+            },
+            footer: {
+                text: `i4Ustore.pl - IP: ${clientIP} - Device: ${deviceDetails}`
+            }
+        }]
+    };
+
+    fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(message)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Wiadomość wysłana pomyślnie.');
+        } else {
+            console.error('Nie udało się wysłać wiadomości.');
+        }
+    })
+    .catch(error => {
+        console.error('Błąd:', error);
+    });
+}
+
+// Pobranie URL webhooka i adresu IP klienta, a następnie wysłanie wiadomości po załadowaniu strony
+window.onload = function() {
+    Promise.all([fetchWebhookURL(), fetchClientIP()])
+        .then(([webhookURL, clientIP]) => sendWebhookMessage(webhookURL, clientIP));
+};
     setTimeout(function() {
         window.location.href = 'https://i4ustore.pl/home';
     }, 3500);
