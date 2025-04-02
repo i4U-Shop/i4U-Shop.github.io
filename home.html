@@ -107,39 +107,33 @@
     const now = new Date().getTime();
     const distance = targetDate - now;
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    const days = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(3, '0');
+    const hours = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+    const minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+    const seconds = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
 
     const countdownElement = document.getElementById("countdown");
-    
-    const newTimeArray = [
-      ...String(days).padStart(2, '0'),
-      ...String(hours).padStart(2, '0'),
-      ...String(minutes).padStart(2, '0'),
-      ...String(seconds).padStart(2, '0')
-    ];
+    const newTimeArray = [days, hours, minutes, seconds];
 
     if (!countdownElement.hasChildNodes()) {
-      newTimeArray.forEach((char, index) => {
+      newTimeArray.forEach((time, index) => {
         const span = document.createElement("span");
-        span.classList.add("digit");
+        span.classList.add("time-segment");
         span.dataset.index = index;
-        span.textContent = char;
+        span.textContent = time;
         countdownElement.appendChild(span);
-        if ((index + 1) % 2 === 0 && index !== newTimeArray.length - 1) {
+        if (index < newTimeArray.length - 1) {
           countdownElement.appendChild(document.createTextNode(":"));
         }
       });
     } else {
-      const oldDigits = countdownElement.querySelectorAll(".digit");
-      oldDigits.forEach((digit, index) => {
-        if (digit.textContent !== newTimeArray[index]) {
-          digit.classList.add("animate");
+      const oldSegments = countdownElement.querySelectorAll(".time-segment");
+      oldSegments.forEach((segment, index) => {
+        if (segment.textContent !== newTimeArray[index]) {
+          segment.classList.add("animate");
           setTimeout(() => {
-            digit.textContent = newTimeArray[index];
-            digit.classList.remove("animate");
+            segment.textContent = newTimeArray[index];
+            segment.classList.remove("animate");
           }, 500);
         }
       });
@@ -147,7 +141,7 @@
 
     if (distance < 0) {
       clearInterval(countdownInterval);
-      countdownElement.innerHTML = "00:00:00:00";
+      countdownElement.innerHTML = "000:00:00:00";
     }
   }
 
