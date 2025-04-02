@@ -86,7 +86,18 @@
     }
 
     .digit.animate {
-      transform: scale(1.5);
+      animation: blurFade 0.5s forwards;
+    }
+
+    @keyframes blurFade {
+      0% {
+        opacity: 1;
+        filter: blur(0);
+      }
+      100% {
+        opacity: 0;
+        filter: blur(5px);
+      }
     }
   </style>
 </head>
@@ -111,23 +122,26 @@
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      document.getElementById("countdown").innerHTML = `
+      const countdownElement = document.getElementById("countdown");
+      const newTimeString = `
         <span class="digit">${String(days).padStart(2, '0')}</span>:
         <span class="digit">${String(hours).padStart(2, '0')}</span>:
         <span class="digit">${String(minutes).padStart(2, '0')}</span>:
         <span class="digit">${String(seconds).padStart(2, '0')}</span>
       `;
 
-      document.querySelectorAll('.digit').forEach(digit => {
-        digit.classList.add('animate');
+      if (countdownElement.innerHTML !== newTimeString) {
+        document.querySelectorAll('.digit').forEach(digit => {
+          digit.classList.add('animate');
+        });
         setTimeout(() => {
-          digit.classList.remove('animate');
+          countdownElement.innerHTML = newTimeString;
         }, 500);
-      });
+      }
 
       if (distance < 0) {
         clearInterval(countdownInterval);
-        document.getElementById("countdown").innerHTML = "00:00:00:00";
+        countdownElement.innerHTML = "00:00:00:00";
       }
     }
 
