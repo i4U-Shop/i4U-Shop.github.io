@@ -1,85 +1,138 @@
+<!DOCTYPE html>
+<html lang="pl">
 <head>
   <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>i4U Store</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-<meta content="i4U Shop" property="og:title" />
-<meta content="Skup i sprzedaż iPhone'ów." property="og:description" />
-<meta content="https://i4u-shop.guthub.io" property="og:url" />
-<meta content="https://i4u-shop.github.io/i4u-logo.PNG" property="og:image" />
-<meta content="#000000" name="theme-color" />
-<style>
-        @font-face {
-            font-family: 'SF-Pro';
-            src: url('https://wasik05.pl/fonts/sf-pro-display-bold.woff2') format('woff2');
-            font-weight: bold;
-        }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>i4U Store</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta content="i4U Shop" property="og:title" />
+  <meta content="Skup i sprzedaż iPhone'ów." property="og:description" />
+  <meta content="https://i4u-shop.github.io" property="og:url" />
+  <meta content="https://i4u-shop.github.io/i4u-logo.PNG" property="og:image" />
+  <meta content="#000000" name="theme-color" />
+  <style>
+    @font-face {
+      font-family: 'SF-Pro';
+      src: url('https://wasik05.pl/fonts/sf-pro-display-bold.woff2') format('woff2');
+      font-weight: bold;
+    }
 
-        @font-face {
-            font-family: 'SF-Pro';
-            src: url('https://wasik05.pl/fonts/sf-pro-display-regular.woff2') format('woff2');
-            font-weight: normal;
-        }
+    @font-face {
+      font-family: 'SF-Pro';
+      src: url('https://wasik05.pl/fonts/sf-pro-display-regular.woff2') format('woff2');
+      font-weight: normal;
+    }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'SF-Pro', sans-serif;
-            background-color: black;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            text-align: center;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'SF-Pro', sans-serif;
+      background-color: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+    }
 
-        h1 {
-            font-size: 1.2em;
-            font-weight: bold;
-            animation: fadeIn 1.5s forwards;
-        }
+    h1 {
+      font-size: 1.2em;
+      font-weight: bold;
+      animation: fadeIn 1.5s forwards;
+    }
 
-        p {
-            font-size: 10px;
-            animation: fadeIn 1.5s forwards;
-        }
+    p {
+      font-size: 10px;
+      animation: fadeIn 1.5s forwards;
+    }
 
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #1a1a1a;
-            color: white;
-            font-size: 0.6em;
-            padding: 3px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 1.5s forwards;
-        }
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #1a1a1a;
+      color: white;
+      font-size: 0.6em;
+      padding: 3px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 1.5s forwards;
+    }
 
-        footer img {
-            height: 30px;
-            margin-right: 4px;
-            animation: fadeIn 1.5s forwards;
-        }
-        
-        @keyframes fadeIn {
+    footer img {
+      height: 30px;
+      margin-right: 4px;
+      animation: fadeIn 1.5s forwards;
+    }
+
+    #countdown {
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 20px;
+      animation: fadeIn 1.5s forwards;
+    }
+
+    @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
-    </style>
-  </head>
+
+    .digit {
+      display: inline-block;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .digit.animate {
+      transform: scale(1.5);
+    }
+  </style>
+</head>
 <body>
-    <div>
-        <h1>Tworzymy innowacje dla Ciebie</h1>
-        <p>Po finalizacji, nasze osiągnięcia staną się synonimem jakości.</p>
-    </div>
-    <footer>
-        <img src="i4U-logoV.svg" alt="Logo">
-        <span>i4U Store, Wszelkie prawa zastrzeżone © 2025</span>
-    </footer>
+  <div>
+    <div id="countdown"></div>
+    <h1>Tworzymy innowacje dla Ciebie</h1>
+    <p>Po finalizacji, nasze osiągnięcia staną się synonimem jakości.</p>
+  </div>
+  <footer>
+    <img src="i4U-logoV.svg" alt="Logo">
+    <span>i4U Store, Wszelkie prawa zastrzeżone © 2025</span>
+  </footer>
+  <script>
+    function updateCountdown() {
+      const targetDate = 1775080800 * 1000; // Konwersja timestampu na milisekundy
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("countdown").innerHTML = `
+        <span class="digit">${String(days).padStart(2, '0')}</span>:
+        <span class="digit">${String(hours).padStart(2, '0')}</span>:
+        <span class="digit">${String(minutes).padStart(2, '0')}</span>:
+        <span class="digit">${String(seconds).padStart(2, '0')}</span>
+      `;
+
+      document.querySelectorAll('.digit').forEach(digit => {
+        digit.classList.add('animate');
+        setTimeout(() => {
+          digit.classList.remove('animate');
+        }, 500);
+      });
+
+      if (distance < 0) {
+        clearInterval(countdownInterval);
+        document.getElementById("countdown").innerHTML = "00:00:00:00";
+      }
+    }
+
+    const countdownInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
 </body>
 </html>
