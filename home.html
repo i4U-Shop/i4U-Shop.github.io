@@ -113,6 +113,7 @@
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
       const countdownElement = document.getElementById("countdown");
+      const oldDigits = countdownElement.querySelectorAll('.digit');
       const newTimeString = `
         <span class="digit">${String(days).padStart(2, '0')}</span>:
         <span class="digit">${String(hours).padStart(2, '0')}</span>:
@@ -121,15 +122,15 @@
       `;
 
       if (countdownElement.innerHTML !== newTimeString) {
-        const oldDigits = countdownElement.querySelectorAll('.digit');
         oldDigits.forEach((digit, index) => {
           if (digit.textContent !== newTimeString[index * 3]) {
             digit.classList.add('animate');
+            setTimeout(() => {
+              digit.classList.remove('animate');
+              countdownElement.innerHTML = newTimeString;
+            }, 500);
           }
         });
-        setTimeout(() => {
-          countdownElement.innerHTML = newTimeString;
-        }, 500);
       }
 
       if (distance < 0) {
