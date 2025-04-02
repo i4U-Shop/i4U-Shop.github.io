@@ -80,22 +80,22 @@
       to { opacity: 1; }
     }
 
-    .digit {
-      display: inline-block;
-      transition: opacity 0.5s, filter 0.5s;
-    }
-
-    .digit.animate {
-      opacity: 0;
-      filter: blur(5px);
-    }
     .time-segment {
     display: inline-block;
     font-size: 2em;
     font-weight: bold;
-    margin: 0 8px; /* Dodaje odstępy między segmentami */
+    margin: 0 8px; /* Odstępy między segmentami */
+  }
+
+  .digit {
+    display: inline-block;
     transition: opacity 0.5s, transform 0.5s, filter 0.5s;
   }
+
+  .digit.animate {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(-10px);
 
   .animate {
     opacity: 0;
@@ -128,23 +128,34 @@
     const newTimeArray = [days, hours, minutes, seconds];
 
     if (!countdownElement.hasChildNodes()) {
-      newTimeArray.forEach((time, index) => {
+      newTimeArray.forEach((time, segmentIndex) => {
         const span = document.createElement("span");
         span.classList.add("time-segment");
-        span.dataset.index = index;
-        span.textContent = time;
+        span.dataset.index = segmentIndex;
+
+        [...time].forEach((char, digitIndex) => {
+          const digitSpan = document.createElement("span");
+          digitSpan.classList.add("digit");
+          digitSpan.dataset.index = digitIndex;
+          digitSpan.textContent = char;
+          span.appendChild(digitSpan);
+        });
+
         countdownElement.appendChild(span);
       });
     } else {
       const oldSegments = countdownElement.querySelectorAll(".time-segment");
-      oldSegments.forEach((segment, index) => {
-        if (segment.textContent !== newTimeArray[index]) {
-          segment.classList.add("animate");
-          setTimeout(() => {
-            segment.textContent = newTimeArray[index];
-            segment.classList.remove("animate");
-          }, 500);
-        }
+      oldSegments.forEach((segment, segmentIndex) => {
+        const oldDigits = segment.querySelectorAll(".digit");
+        [...newTimeArray[segmentIndex]].forEach((newChar, digitIndex) => {
+          if (oldDigits[digitIndex].textContent !== newChar) {
+            oldDigits[digitIndex].classList.add("animate");
+            setTimeout(() => {
+              oldDigits[digitIndex].textContent = newChar;
+              oldDigits[digitIndex].classList.remove("animate");
+            }, 500);
+          }
+        });
       });
     }
 
